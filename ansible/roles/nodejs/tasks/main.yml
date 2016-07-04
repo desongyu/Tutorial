@@ -2,4 +2,3 @@
 - name: test
   shell: "curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -"
 - shell: "sudo apt-get install -y nodejs"
-- shell: "docker run -d --name server -v /vagrant/server:/usr/src/app -w /usr/src/app -p 3000:3000 node:6-onbuild "

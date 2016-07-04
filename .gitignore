@@ -49,3 +49,4 @@ Temporary Items
 .vagrant
 **/node_modules
 *.log
+ansible/services.retry
