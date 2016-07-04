@@ -47,3 +47,5 @@ Temporary Items
 .apdisk
 
 .vagrant
+**/node_modules
+*.log
