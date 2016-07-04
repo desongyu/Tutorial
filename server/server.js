@@ -6,7 +6,7 @@ app.set('view engin','ejs');
 app.use(express.static('public'));
 app.use(bodyParser.json());
 
-MongoClient.connect('mongodb://admin:admin@ds015934.mlab.com:15934/my-playground', function (err, database){
+MongoClient.connect('mongodb://172.17.0.1/test', function (err, database){
   if (err) return console.log(err);
     db = database;
     app.listen(3000, function(){
