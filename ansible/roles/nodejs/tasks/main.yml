@@ -1,4 +1,4 @@
 ---
-- name: test
+- name: nodejs
   shell: "curl -sL https://deb.nodesource.com/setup_6.x | sudo -E bash -"
 - shell: "sudo apt-get install -y nodejs"
