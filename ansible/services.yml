@@ -2,7 +2,7 @@
 - name: vagrant
   hosts: all
   roles: 
-    - nodejs
+    - { role : nodejs, tags : 'infrequent' }
     - mongo
     - server
 #  pre_tasks:
