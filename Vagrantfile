@@ -69,6 +69,7 @@ Vagrant.configure("2") do |config|
      sudo apt-get install software-properties-common -y
      sudo apt-add-repository ppa:ansible/ansible -y
      sudo apt-get update -y
+     sudo apt-get install ansible mongodb-clients vim -y
    SHELL
     
     config.vm.provision "docker"
