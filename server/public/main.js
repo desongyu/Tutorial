@@ -15,5 +15,6 @@ update.addEventListener('click', function () {
   })
   .then(function(data){
       console.log(data);
+      window.location.reload(true)
   })
 })
