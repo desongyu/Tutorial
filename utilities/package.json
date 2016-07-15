@@ -1,0 +1,19 @@
+{
+  "name": "utilities",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon server.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "js-yaml": "^3.6.1",
+    "mongodb": "^2.1.18",
+    "nodemon": "^1.9.2"
+  },
+  "devDependencies": {
+    "nodemon": "^1.9.2"
+  }
+}
