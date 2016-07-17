@@ -36,7 +36,65 @@ mongodb.MongoClient.connect(process.env.MONGODB_URL || "mongodb://localhost/lyne
             }
         })
     }
-    
-    
-})
 
+    
+    session.context.test = function() {
+        db.collection('proposals').aggregate(
+    [
+         {
+            $match:{}
+         },
+         {
+            $lookup:
+            {
+             from:"users",
+             localField:"proID",
+             foreignField:"_id", as:"pro"
+            }
+         }
+    ]
+            
+/*            
+    [
+        {
+            $match:
+            {
+                submissionTimestamp:
+                {
+                    $gt:Date.now()/1000-24*3600*5
+                }
+            }
+        },
+        {
+            $lookup:
+            {
+                from: "users",
+                localField: "clientID",
+                foreignField: "_id",
+                as: "client"                    
+            }
+                   
+        }
+    ]
+    */
+    ).toArray(function(error, results){
+        if (error) {
+              console.log(error);
+          } 
+        else {     
+                          
+              for (var i=0; i<results.length; ++i) {
+//                  results[i].submissionDateTime = new Date(results[i].submissionTimestamp*1000).toString();
+//                  delete results[i].submissionTimestamp;
+//                  delete results[i].client.passwordHash;                   
+                  delete(results[i].pro[0].passwordHash);                  
+                }
+                
+              console.log(yaml.dump(results));                  
+          }
+          
+    
+    })
+    };
+          
+})
