@@ -37,6 +37,148 @@ mongodb.MongoClient.connect(process.env.MONGODB_URL || "mongodb://localhost/lyne
         })
     }
     
-    
-})
+    var propipeline=
+           [   
+                { 
+                    $match:{}
+                },
+                {
+                    $lookup:
+                    {
+                        from:"users",
+                        localField:"proID",
+                        foreignField:"_id", as:"pro"
+                    }
+                }
 
+            ];
+
+    session.context.aggregatePro = function(){
+
+        db.collection('proposals').aggregate(
+            propipeline
+        ).toArray(function(err, result){
+                if (err){
+                    console.log(err)
+                }
+                else{
+                    //console.log(result[0]);
+                    //console.log(yaml.dump(result));
+                    for (var i=0; i < result.length; i++){
+                      //  console.log("DEBUG I is"+i+"/n" );
+                        delete (result[i].pro[0].passwordHash);
+
+                    }
+                    //console.log(result)
+                    console.log(yaml.dump(result));
+                }
+            }
+        )
+    }
+
+    var requestpipeline = 
+    [
+            {
+            $match:
+            {
+                submissionTimestamp:
+                {
+                    $gt:Date.now()/1000-24*3600*5
+                }
+            }
+            },
+            {
+            $lookup:
+            {
+                from:"users",
+                localField:"clientID",
+                foreignField:"_id",as:"client"
+            }
+        }
+
+    ];
+
+     session.context.aggregateRequest = function(){
+
+        db.collection('requests').aggregate(
+           requestpipeline
+        ).toArray(function(err, result){
+                if (err){
+                    console.log(err)
+                }
+                else{
+                    console.log(result[0]);
+                    //console.log(yaml.dump(result));
+                    for (var i=0; i < result.length; i++){
+                      //  console.log("DEBUG I is"+i+"/n" );
+                      result[i].submissionDateTime = new Date(result[i].submissionTimestamp*1000).toString();
+                      delete(result[i].submissionTimestamp);
+                      delete(result[i].client[0].passwordHash);
+                    }
+                    console.log(result[0])
+                   // console.log(yaml.dump(result));
+                }
+            }
+        )
+    }
+
+    var proposalpipeline2 =
+    [
+    {
+        $match:
+        {
+            status: 
+            {
+                $ne:"draft"
+            },
+            submissionTimestamp:
+            {
+                $gt:Date.now()/1000-24*3600*5
+            }
+        }
+    },
+    {
+        $lookup:
+        {
+            from:"requests",
+            localField:"requestID",
+            foreignField:"_id",as:"request"
+        }
+    },
+    {
+        $lookup:
+        {
+            from:"users",localField:"proID",foreignField:"_id",as:"pro"
+        }
+    }
+    ];
+
+    session.context.aggregateProposal = function(){
+
+        db.collection('proposals').aggregate(
+           proposalpipeline2
+        ).toArray(function(err, result){
+                if (err){
+                    console.log(err)
+                }
+                else{
+                    console.log(result[0]);
+                    //console.log(yaml.dump(result));
+                    for (var i=0; i < result.length; i++){
+                      //  console.log("DEBUG I is"+i+"/n" );
+                      result[i].submissionDateTime = new Date(result[i].submissionTimestamp*1000).toString();
+                      delete(result[i].submissionTimestamp);
+                      result[i].request = result[i].request[0];
+                      result[i].pro = result[i].pro[0];
+                      delete (result[i].proID);
+                    }
+                    console.log(result[0])
+                   // console.log(yaml.dump(result));
+                }
+            }
+        )
+    }
+
+
+
+})

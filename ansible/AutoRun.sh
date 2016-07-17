@@ -2,7 +2,7 @@
 
 if [ $# -eq 0 ]
 then 
-    echo "Default Option: Running All Rolls"
+    echo "Default Option: Running All Roles"
     ansible-playbook -i hosts -vvv services.yml
 elif [ $1 = "-h" ];
 then
