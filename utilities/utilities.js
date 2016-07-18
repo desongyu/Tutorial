@@ -1,6 +1,7 @@
 var session = require('repl').start({prompt: "", ignoreUndefined: true})
 var mongodb = require('mongodb')
 var yaml = require('js-yaml')
+var readline = require('readline');
 
 mongodb.MongoClient.connect(process.env.MONGODB_URL || "mongodb://localhost/lynedup", function (error, db) {
     if (error) {
@@ -183,6 +184,34 @@ mongodb.MongoClient.connect(process.env.MONGODB_URL || "mongodb://localhost/lyne
         )
     }
 
+    session.context.deleteUser = function(userId){ 
+        db.collection('users').findOne({
+            _id: userId
+        }, function(err, result){
+            console.log(yaml.dump(result));
+
+            const rl = readline.createInterface({
+                input: process.stdin,
+                output: process.stdout
+            });
+
+            rl.question('Are you sure? ', (answer) => {
+            
+            console.log('Your response is:', answer);
+
+            if (answer) {
+                //TODO: remove from DB
+                console.log("Removed")
+            } else {
+                console.log("Item not removed")
+            }
+
+            rl.close();
+            });
+
+
+        });
+    }
 
 
 })
