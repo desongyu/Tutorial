@@ -196,20 +196,10 @@ mongodb.MongoClient.connect(process.env.MONGODB_URL || "mongodb://localhost/lyne
             });
 
             rl.question('Are you sure? ', (answer) => {
-            
-            console.log('Your response is:', answer);
+                console.log('Your response is:', answer);
 
-            if (answer) {
-                //TODO: remove from DB
-                console.log("Removed")
-            } else {
-                console.log("Item not removed")
-            }
-
-            rl.close();
+                //rl.close();                
             });
-
-
         });
     }
 
