@@ -52,36 +52,15 @@ replServer.context.del = function (fileName) {
             //queryContent = queryContent +
         }
         
-    /*    db.collection('users').find({}).toArray(function (error, results) {
-            console.log(results);
-        })
-      */  
-        
-        var cond={$regex: fileContent[0], $options: "i"};
-         db.collection('users').find({emailAddress:
-            cond}).toArray(function (error, results) {
-//          JSON.stringify(fileContent[0])}).toArray(function (error, results) {
+        var cond={$regex: fileContent, $options: "i"};
+         db.collection('users').find({emailAddress: {$in:
+            fileContent}}).toArray(function (error, results) {
              console.log(results);
         })
         
         console.log("finding ---- " + JSON.stringify(fileContent[0]) + "!")
         
- /*       var contentToMatch = fileContent[0].toString();
-        
-        var cur = db.collection('users').find({
-                //emailAddress: contentToMatch    
-        });
-        
-        var doc = cur.hasNext() ? cur.next() : null;
-        
-        if (doc) {
-            console.log(yaml.dump(doc));
-        } else {
-            console.log("No documents");
-        }
-        
-       */ 
-        console.log("are you sure?? enter .y")
+         console.log("are you sure?? enter .y")
         return ""
     })
 }
