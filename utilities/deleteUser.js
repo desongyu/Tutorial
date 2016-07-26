@@ -1,5 +1,8 @@
 const repl = require('repl');
-const util = require('util')
+const util = require('util');
+var fs = require('fs');
+var mongodb = require('mongodb');
+var yaml = require('js-yaml');
 
 
 var yesHandlerToSet = null
@@ -25,11 +28,60 @@ replServer.defineCommand('y', function() {
 /////////////////////////////////////////////////////////////
 // define commands here
 
-replServer.context.del = function () {
+replServer.context.del = function (fileName) {
     console.log("-----------context.del----------")
-  	yesHandlerToSet = function () {
-  		console.log("deleted everything.")
+  	yesHandlerToSet = function () {      
+        
+  		console.log("deleted everything in " + fileName);
   	}
-	console.log("are you sure?? enter .y")
-	return ""
+    
+    mongodb.MongoClient.connect(process.env.MONGODB_URL || "mongodb://localhost/lynedup", function (error, db) {
+        if (error) {
+            console.log(error)
+            process.exit(0)            
+        }
+
+        // Read in file content
+        var fileContentTmp = fs.readFileSync(fileName).toString().split("\n");
+        var fileContent = [];
+        var queryContent = "[";
+        for (i in fileContentTmp) {            
+            // Remove any line feeds
+            fileContent[i] = fileContentTmp[i].replace(/\n|\r/g,"");
+            console.log("\n"+JSON.stringify(fileContent[i])+"!");        
+            //queryContent = queryContent +
+        }
+        
+    /*    db.collection('users').find({}).toArray(function (error, results) {
+            console.log(results);
+        })
+      */  
+        
+        var cond={$regex: fileContent[0], $options: "i"};
+         db.collection('users').find({emailAddress:
+            cond}).toArray(function (error, results) {
+//          JSON.stringify(fileContent[0])}).toArray(function (error, results) {
+             console.log(results);
+        })
+        
+        console.log("finding ---- " + JSON.stringify(fileContent[0]) + "!")
+        
+ /*       var contentToMatch = fileContent[0].toString();
+        
+        var cur = db.collection('users').find({
+                //emailAddress: contentToMatch    
+        });
+        
+        var doc = cur.hasNext() ? cur.next() : null;
+        
+        if (doc) {
+            console.log(yaml.dump(doc));
+        } else {
+            console.log("No documents");
+        }
+        
+       */ 
+        console.log("are you sure?? enter .y")
+        return ""
+    })
 }

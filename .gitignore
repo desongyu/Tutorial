@@ -50,3 +50,4 @@ Temporary Items
 **/node_modules
 *.log
 ansible/services.retry
+**/tmp
