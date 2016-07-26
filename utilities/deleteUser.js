@@ -44,13 +44,15 @@ replServer.context.del = function (fileName) {
         // Read in file content
         var fileContentTmp = fs.readFileSync(fileName).toString().split("\n");
         var fileContent = [];
-        var queryContent = "[";
+        
         for (i in fileContentTmp) {            
             // Remove any line feeds
             fileContent[i] = fileContentTmp[i].replace(/\n|\r/g,"");
             console.log("\n"+JSON.stringify(fileContent[i])+"!");        
-            //queryContent = queryContent +
+        
         }
+        
+        //fileContent = fileContentTmp.map(function(x){return x.toLowerCase().trim()})
         
         var cond={$regex: fileContent, $options: "i"};
          db.collection('users').find({emailAddress: {$in:
