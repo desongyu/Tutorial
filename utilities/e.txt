@@ -1,2 +1,2 @@
-abc@gmail.com
-efg@hotmail.com
+Abc@gmail.com
+Efg@hotmail.com
