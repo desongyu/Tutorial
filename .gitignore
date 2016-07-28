@@ -48,6 +48,7 @@ Temporary Items
 
 .vagrant
 **/node_modules
+**/test
 *.log
 ansible/services.retry
 **/tmp
