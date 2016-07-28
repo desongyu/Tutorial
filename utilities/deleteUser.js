@@ -35,12 +35,10 @@ queryUser = function(fileName){
 
         // Read in file content
         var fileContentTmp = fs.readFileSync(fileName).toString().split("\n");        
-               
-        for (i in fileContentTmp) {            
-            // Convert content to lower case and remove white spaces
-            fileContent[i] = fileContentTmp[i].toLowerCase().trim();            
-        }
-     
+      
+        // Remove white space and convert to lower case  
+        fileContent = fileContentTmp.map(function(x){return x.toLowerCase().trim();});
+             
         // Query on the Users collection for matching email addresses
         db.collection('users').find(
             {
