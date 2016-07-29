@@ -24,8 +24,6 @@ replServer.defineCommand('y', function() {
     this.displayPrompt();
 })
 
-/////////////////////////////////////////////////////////////
-// define commands here
 queryUser = function(fileName){
     mongodb.MongoClient.connect(process.env.MONGODB_URL || "mongodb://localhost/lynedup", function (error, db) {
         if (error) {
@@ -45,6 +43,11 @@ queryUser = function(fileName){
                 emailAddress: { $in: fileContent }
             })
             .toArray(function (error, results) {
+
+            if (error) {
+                console.log(error)
+                process.exit(0)            
+            }
             
              console.log("\nRequested to delete: " + fileContent.length);
              console.log("Found in DB: " + results.length);
