@@ -80,12 +80,15 @@ deleteUser = function() {
         }
 
         // Save the list of matching documents first before try to delete
-        var seconds = new Date().getTime() / 1000;
-        fs.writeFile("foundDocs_"+seconds, JSON.stringify(foundDocuments), function(err){
+        var seconds = new Date().getTime();
+        var archiveDocName = "foundDocs_"+seconds;
+        fs.writeFile(archiveDocName, JSON.stringify(foundDocuments), function(err){
             if(err) {
                 console.log("Failed to save matched documents to disk: " + err);
                 process.exit(0);
             }
+
+            console.log("Deleting...")
 
             try {            
                 db.collection('users').deleteMany({
@@ -99,7 +102,7 @@ deleteUser = function() {
                         process.exit(0)            
                     }
                     
-                    console.log("Deleted " + r.deletedCount);
+                    console.log("Deleted " + r.deletedCount + " documents, archived at " + archiveDocName);                    
                 });
             } catch (e) {
                 console.log(e)
